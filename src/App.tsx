@@ -290,4 +290,4 @@ function App() {
             <h1 className="text-4xl font-bold text-gray-800 mb-4">
               Your Personal Journal 📝
             </h1>
-            <p cla
+            <p className="your-class-name">Your content here</p>
