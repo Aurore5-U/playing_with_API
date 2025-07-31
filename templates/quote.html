@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Inspirational Quotes - MindfulMe{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1 class="page-title">Find Your Inspiration 💫</h1>
+        <p class="page-subtitle">Discover quotes that resonate with your current mood</p>
+    </div>
+
+    <div class="quote-section">
+        <div class="current-mood" id="currentMood">
+            {% if mood %}
+            <span class="mood-indicator">Current mood: <strong>{{ mood|title }}</strong></span>
+            {% endif %}
+        </div>
+
+        <div class="quote-container" id="quoteContainer">
+            <div class="loading-spinner" id="loadingSpinner">
+                <div class="spinner"></div>
+                <p>Finding the perfect quote for you...</p>
+            </div>
+            
+            <div class="quote-display" id="quoteDisplay" style="display: none;">
+                <div class="quote-content">
+                    <blockquote class="quote-text" id="quoteText"></blockquote>
+                    <cite class="quote-author" id="quoteAuthor"></cite>
+                </div>
+            </div>
+        </div>
+
+        <div class="quote-actions">
+            <button onclick="getNewQuote('{{ mood if mood else 'happy' }}')" class="btn btn-primary" id="newQuoteBtn">
+                🔄 Get New Quote
+            </button>
+            <a href="{{ url_for('mood') }}" class="btn btn-secondary">
+                😊 Change Mood
+            </a>
+        </div>
+    </div>
+
+    <div class="mood-selector">
+        <h3>Or choose a different mood for quotes:</h3>
+        <div class="mood-buttons">
+            <button onclick="getNewQuote('happy')" class="mood-btn mood-happy">😊 Happy</button>
+            <button onclick="getNewQuote('sad')" class="mood-btn mood-sad">😢 Sad</button>
+            <button onclick="getNewQuote('anxious')" class="mood-btn mood-anxious">😰 Anxious</button>
+            <button onclick="getNewQuote('stressed')" class="mood-btn mood-stressed">😵 Stressed</button>
+            <button onclick="getNewQuote('grateful')" class="mood-btn mood-grateful">🙏 Grateful</button>
+            <button onclick="getNewQuote('motivated')" class="mood-btn mood-motivated">💪 Motivated</button>
+            <button onclick="getNewQuote('lonely')" class="mood-btn mood-lonely">😔 Lonely</button>
+            <button onclick="getNewQuote('angry')" class="mood-btn mood-angry">😠 Angry</button>
+        </div>
+    </div>
+
+    <div class="quote-info">
+        <div class="info-card">
+            <h3>🌟 The Power of Words</h3>
+            <p>Inspirational quotes can shift our perspective, provide comfort during difficult times, and motivate us to pursue our goals. Let these words guide and inspire you on your journey.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+// Auto-load quote when page loads if mood is set
+document.addEventListener('DOMContentLoaded', function() {
+    const mood = '{{ mood if mood else "happy" }}';
+    if (mood) {
+        getNewQuote(mood);
+    }
+});
+
+function getNewQuote(mood) {
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const quoteDisplay = document.getElementById('quoteDisplay');
+    const currentMoodEl = document.getElementById('currentMood');
+    
+    // Show loading spinner
+    loadingSpinner.style.display = 'block';
+    quoteDisplay.style.display = 'none';
+    
+    // Update current mood display
+    currentMoodEl.innerHTML = `<span class="mood-indicator">Current mood: <strong>${mood.charAt(0).toUpperCase() + mood.slice(1)}</strong></span>`;
+    
+    // Fetch quote from API
+    fetch(`/api/quote/${mood}`)
+        .then(response => response.json())
+        .then(data => {
+            setTimeout(() => {
+                loadingSpinner.style.display = 'none';
+                quoteDisplay.style.display = 'block';
+                
+                document.getElementById('quoteText').textContent = `"${data.quote}"`;
+                document.getElementById('quoteAuthor').textContent = `— ${data.author}`;
+                
+                // Add animation
+                quoteDisplay.style.opacity = '0';
+                quoteDisplay.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    quoteDisplay.style.transition = 'all 0.5s ease';
+                    quoteDisplay.style.opacity = '1';
+                    quoteDisplay.style.transform = 'translateY(0)';
+                }, 100);
+            }, 1000); // Small delay for better UX
+        })
+        .catch(error => {
+            console.error('Error fetching quote:', error);
+            loadingSpinner.style.display = 'none';
+            quoteDisplay.style.display = 'block';
+            document.getElementById('quoteText').textContent = '"The greatest glory in living lies not in never falling, but in rising every time we fall."';
+            document.getElementById('quoteAuthor').textContent = '— Nelson Mandela';
+        });
+}
+</script>
+{% endblock %}

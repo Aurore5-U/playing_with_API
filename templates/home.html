@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Home - MindfulMe{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title">Welcome to MindfulMe 🌱</h1>
+        <p class="hero-subtitle">Your personal mental health companion</p>
+        <p class="hero-description">
+            Take a moment to check in with yourself. Track your mood, write in your journal, 
+            and find inspiration through motivational quotes tailored to how you're feeling.
+        </p>
+        
+        <div class="hero-actions">
+            <a href="{{ url_for('mood') }}" class="btn btn-primary">
+                😊 Check Your Mood
+            </a>
+            <a href="{{ url_for('journal') }}" class="btn btn-secondary">
+                📝 Start Journaling
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="features-section">
+    <div class="container">
+        <h2 class="section-title">How MindfulMe Helps You</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">😊</div>
+                <h3>Mood Tracking</h3>
+                <p>Monitor your emotional well-being by tracking how you feel throughout your journey.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📝</div>
+                <h3>Personal Journal</h3>
+                <p>Express your thoughts and feelings in a safe, private space designed for reflection.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">💫</div>
+                <h3>Inspirational Quotes</h3>
+                <p>Discover motivational quotes that resonate with your current mood and mindset.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🌱</div>
+                <h3>Personal Growth</h3>
+                <p>Build healthy habits and develop emotional awareness through consistent self-care.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="cta-section">
+    <div class="container">
+        <h2>Ready to Begin Your Wellness Journey?</h2>
+        <p>Start by checking in with your current mood and see what insights await you.</p>
+        <a href="{{ url_for('mood') }}" class="btn btn-primary btn-large">
+            Get Started Today 🚀
+        </a>
+    </div>
+</div>
+{% endblock %}

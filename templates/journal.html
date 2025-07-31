@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Journal - MindfulMe{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1 class="page-title">Your Personal Journal 📝</h1>
+        <p class="page-subtitle">Express your thoughts and feelings in a safe, private space</p>
+    </div>
+
+    <div class="journal-section">
+        <form method="POST" class="journal-form">
+            <div class="form-group">
+                <label for="journal_entry" class="form-label">What's on your mind today?</label>
+                <textarea 
+                    id="journal_entry" 
+                    name="journal_entry" 
+                    class="journal-textarea" 
+                    placeholder="Write about your day, your feelings, your thoughts, or anything that comes to mind. This is your safe space..."
+                    rows="8"
+                    required
+                ></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                💾 Save Entry
+            </button>
+        </form>
+    </div>
+
+    {% if entries %}
+    <div class="journal-entries">
+        <h2 class="entries-title">Your Recent Entries</h2>
+        <div class="entries-grid">
+            {% for entry in entries|reverse %}
+            <div class="entry-card">
+                <div class="entry-header">
+                    <span class="entry-date">{{ entry.date }}</span>
+                    <span class="entry-mood mood-{{ entry.mood }}">{{ entry.mood|title }}</span>
+                </div>
+                <div class="entry-content">
+                    <p>{{ entry.text[:200] }}{% if entry.text|length > 200 %}...{% endif %}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="no-entries">
+        <div class="no-entries-content">
+            <div class="no-entries-icon">📖</div>
+            <h3>Start Your First Entry</h3>
+            <p>Your journal is empty. Why not write about how you're feeling right now?</p>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="journal-tips">
+        <div class="tips-card">
+            <h3>✨ Journaling Tips</h3>
+            <ul>
+                <li>Write without judgment - let your thoughts flow freely</li>
+                <li>Focus on your feelings and experiences, not just events</li>
+                <li>Try to write regularly, even if it's just a few sentences</li>
+                <li>Use prompts if you're stuck: "Today I felt..." or "I'm grateful for..."</li>
+                <li>Remember, this is your private space - be honest with yourself</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

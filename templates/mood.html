@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Mood Tracker - MindfulMe{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1 class="page-title">How are you feeling today? 😊</h1>
+        <p class="page-subtitle">Select the mood that best describes your current emotional state</p>
+    </div>
+
+    <form method="POST" class="mood-form">
+        <div class="mood-grid">
+            <button type="submit" name="mood" value="happy" class="mood-card mood-happy">
+                <div class="mood-emoji">😊</div>
+                <h3>Happy</h3>
+                <p>Feeling joyful and content</p>
+            </button>
+
+            <button type="submit" name="mood" value="sad" class="mood-card mood-sad">
+                <div class="mood-emoji">😢</div>
+                <h3>Sad</h3>
+                <p>Feeling down or melancholy</p>
+            </button>
+
+            <button type="submit" name="mood" value="anxious" class="mood-card mood-anxious">
+                <div class="mood-emoji">😰</div>
+                <h3>Anxious</h3>
+                <p>Feeling worried or nervous</p>
+            </button>
+
+            <button type="submit" name="mood" value="stressed" class="mood-card mood-stressed">
+                <div class="mood-emoji">😵</div>
+                <h3>Stressed</h3>
+                <p>Feeling overwhelmed or pressured</p>
+            </button>
+
+            <button type="submit" name="mood" value="grateful" class="mood-card mood-grateful">
+                <div class="mood-emoji">🙏</div>
+                <h3>Grateful</h3>
+                <p>Feeling thankful and appreciative</p>
+            </button>
+
+            <button type="submit" name="mood" value="motivated" class="mood-card mood-motivated">
+                <div class="mood-emoji">💪</div>
+                <h3>Motivated</h3>
+                <p>Feeling energized and driven</p>
+            </button>
+
+            <button type="submit" name="mood" value="lonely" class="mood-card mood-lonely">
+                <div class="mood-emoji">😔</div>
+                <h3>Lonely</h3>
+                <p>Feeling isolated or disconnected</p>
+            </button>
+
+            <button type="submit" name="mood" value="angry" class="mood-card mood-angry">
+                <div class="mood-emoji">😠</div>
+                <h3>Angry</h3>
+                <p>Feeling frustrated or irritated</p>
+            </button>
+        </div>
+    </form>
+
+    <div class="mood-info">
+        <div class="info-card">
+            <h3>💡 Why Track Your Mood?</h3>
+            <p>Understanding your emotional patterns helps you identify triggers, celebrate positive moments, and develop healthier coping strategies for challenging times.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
