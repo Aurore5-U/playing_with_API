@@ -290,4 +290,115 @@ function App() {
             <h1 className="text-4xl font-bold text-gray-800 mb-4">
               Your Personal Journal 📝
             </h1>
-            <p className="your-class-name">Your content here</p>
+          <p className="text-lg text-gray-600">
+              Express your thoughts, reflect on your day, and track your personal growth journey.
+            </p>
+          </div>
+
+          {/* Journal Entry Form */}
+          <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+            <form onSubmit={handleSubmit}>
+              <div className="mb-6">
+                <label htmlFor="journal-text" className="block text-lg font-semibold text-gray-800 mb-3">
+                  What's on your mind today?
+                </label>
+                <textarea
+                  id="journal-text"
+                  value={journalText}
+                  onChange={(e) => setJournalText(e.target.value)}
+                  className="w-full h-40 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
+                  placeholder="Write about your thoughts, feelings, experiences, or anything else you'd like to remember..."
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={!journalText.trim()}
+                className="bg-green-500 hover:bg-green-600 disabled:bg-gray-300 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg disabled:transform-none"
+              >
+                Save Entry 💾
+              </button>
+            </form>
+          </div>
+
+          {/* Previous Entries */}
+          {journalEntries.length > 0 && (
+            <div className="bg-white rounded-xl shadow-lg p-8">
+              <h2 className="text-2xl font-bold text-gray-800 mb-6">Your Previous Entries</h2>
+              <div className="space-y-6">
+                {journalEntries.map((entry) => (
+                  <div key={entry.id} className="border-l-4 border-green-500 pl-6 py-4 bg-gray-50 rounded-r-lg">
+                    <div className="flex justify-between items-start mb-3">
+                      <span className="text-sm text-gray-500">{entry.date}</span>
+                      <span className="text-sm bg-green-100 text-green-700 px-3 py-1 rounded-full">
+                        {entry.mood}
+                      </span>
+                    </div>
+                    <p className="text-gray-700 leading-relaxed">{entry.text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  const renderQuotePage = () => (
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 py-12">
+      <div className="max-w-4xl mx-auto px-4">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">
+            Inspirational Quotes 💫
+          </h1>
+          <p className="text-lg text-gray-600">
+            Find motivation and wisdom tailored to your current mood
+          </p>
+        </div>
+
+        {currentQuote && (
+          <div className="bg-white rounded-xl shadow-lg p-8 mb-8 border-l-4 border-green-500">
+            {isLoadingQuote ? (
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto mb-4"></div>
+                <p className="text-gray-600">Finding the perfect quote for you...</p>
+              </div>
+            ) : (
+              <>
+                <blockquote className="text-2xl font-medium text-gray-800 mb-6 leading-relaxed">
+                  "{currentQuote.quote}"
+                </blockquote>
+                <p className="text-lg text-green-600 font-semibold">
+                  — {currentQuote.author}
+                </p>
+              </>
+            )}
+          </div>
+        )}
+
+        <div className="text-center">
+          <button
+            onClick={() => setCurrentPage('mood')}
+            className="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg inline-flex items-center space-x-2"
+          >
+            <Heart className="w-5 h-5" />
+            <span>Check Your Mood First</span>
+            <ArrowRight className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {renderNavigation()}
+      {currentPage === 'home' && renderHomePage()}
+      {currentPage === 'mood' && renderMoodPage()}
+      {currentPage === 'journal' && renderJournalPage()}
+      {currentPage === 'quote' && renderQuotePage()}
+    </div>
+  );
+}
+
+export default App;
