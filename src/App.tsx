@@ -1,4 +1,4 @@
-mport React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Brain, Home, Heart, BookOpen, Quote, ArrowRight, Sparkles } from 'lucide-react';
 
 interface JournalEntry {
