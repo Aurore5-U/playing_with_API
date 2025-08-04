@@ -1,26 +1,26 @@
-# Use Node.js official image
-FROM node:18-alpine
+FROM python:3.9-slim
 
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json (if available)
-COPY package*.json ./
+# Copy requirements first for better caching
+COPY requirements.txt .
 
-# Install ALL dependencies (including dev dependencies needed for build)
-RUN npm install
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application code
+# Copy application code
 COPY . .
 
-# Build the application
-RUN npm run build
-
-# Install serve to run the built application
-RUN npm install -g serve
+# Create data directory for file storage
+RUN mkdir -p data
 
 # Expose port 8080
 EXPOSE 8080
 
-# Command to run the application with explicit port
-CMD ["sh", "-c", "serve -s dist -l 8080"]
+# Set environment variables
+ENV FLASK_APP=app.py
+ENV FLASK_ENV=production
+
+# Start the application
+CMD ["python", "app.py"]

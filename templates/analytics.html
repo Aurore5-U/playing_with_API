@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics - MindfulMe{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1 class="page-title">Your Wellness Analytics 📊</h1>
+        <p class="page-subtitle">Insights into your mental health journey</p>
+    </div>
+
+    {% if has_data %}
+    <div class="analytics-grid">
+        <!-- Overview Stats -->
+        <div class="analytics-card overview-card">
+            <h3>📈 Overview</h3>
+            <div class="stats-list">
+                <div class="stat-item">
+                    <span class="stat-label">Total Check-ins:</span>
+                    <span class="stat-value stat-green">{{ stats.total_checkins }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Journal Entries:</span>
+                    <span class="stat-value stat-blue">{{ stats.journal_entries }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Most Common Mood:</span>
+                    <span class="stat-value stat-purple">{{ stats.most_common_mood|title }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Days Active:</span>
+                    <span class="stat-value stat-orange">{{ stats.days_active }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mood Distribution -->
+        <div class="analytics-card mood-distribution-card">
+            <h3>🎭 Mood Distribution</h3>
+            <div class="mood-chart">
+                {% for mood_data in stats.mood_distribution %}
+                <div class="mood-bar-item">
+                    <div class="mood-bar-label">
+                        <span class="mood-name">{{ mood_data.mood|title }}</span>
+                        <span class="mood-stats">{{ mood_data.count }} ({{ mood_data.percentage }}%)</span>
+                    </div>
+                    <div class="mood-bar-container">
+                        <div class="mood-bar mood-bar-{{ mood_data.mood }}" 
+                             style="width: {{ mood_data.percentage }}%"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="analytics-card recent-activity-card">
+            <h3>📅 Recent Activity</h3>
+            <div class="activity-sections">
+                <div class="activity-section">
+                    <h4>Recent Moods</h4>
+                    <div class="recent-items">
+                        {% for mood_entry in stats.recent_moods %}
+                        <div class="recent-item">
+                            <span class="recent-mood mood-{{ mood_entry.mood }}">{{ mood_entry.mood|title }}</span>
+                            <span class="recent-date">{{ mood_entry.date.split()[0] }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                {% if stats.recent_entries %}
+                <div class="activity-section">
+                    <h4>Recent Journal Entries</h4>
+                    <div class="recent-entries">
+                        {% for entry in stats.recent_entries %}
+                        <div class="recent-entry">
+                            <div class="entry-preview">{{ entry.text[:100] }}...</div>
+                            <div class="entry-meta">
+                                <span class="entry-date">{{ entry.date.split()[0] }}</span>
+                                <span class="entry-mood mood-{{ entry.mood }}">{{ entry.mood|title }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Insights -->
+        <div class="analytics-card insights-card">
+            <h3>💡 Insights & Recommendations</h3>
+            <div class="insights-grid">
+                <div class="insight-section">
+                    <h4>Patterns Observed:</h4>
+                    <ul class="insight-list">
+                        <li>• You've been most frequently feeling {{ stats.most_common_mood }}</li>
+                        <li>• You've made {{ stats.journal_entries }} journal entries</li>
+                        <li>• You've tracked {{ stats.total_checkins }} mood check-ins</li>
+                        <li>• You've been active for {{ stats.days_active }} different days</li>
+                    </ul>
+                </div>
+                <div class="insight-section">
+                    <h4>Suggestions:</h4>
+                    <ul class="insight-list">
+                        <li>• Continue regular mood tracking for better insights</li>
+                        <li>• Try journaling when experiencing strong emotions</li>
+                        <li>• Use quotes for motivation during challenging times</li>
+                        <li>• Consider patterns in your mood changes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="no-data">
+        <div class="no-data-content">
+            <div class="no-data-icon">📊</div>
+            <h3>No Data Yet</h3>
+            <p>Start tracking your mood and journaling to see your wellness analytics here.</p>
+            <div class="no-data-actions">
+                <a href="{{ url_for('mood') }}" class="btn btn-primary">Start Tracking Your Mood</a>
+                <a href="{{ url_for('journal') }}" class="btn btn-secondary">Write Your First Entry</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

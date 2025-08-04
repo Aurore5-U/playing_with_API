@@ -28,21 +28,78 @@
         </form>
     </div>
 
+    <!-- Search and Filter Controls -->
+    {% if entries or search_term or filter_mood != 'all' %}
+    <div class="search-filter-section">
+        <form method="GET" class="search-filter-form">
+            <div class="search-filter-grid">
+                <div class="search-group">
+                    <label for="search">🔍 Search entries:</label>
+                    <input type="text" id="search" name="search" value="{{ search_term }}" 
+                           placeholder="Search by text or mood...">
+                </div>
+                
+                <div class="filter-group">
+                    <label for="filter_mood">🎭 Filter by mood:</label>
+                    <select id="filter_mood" name="filter_mood">
+                        <option value="all" {% if filter_mood == 'all' %}selected{% endif %}>All Moods</option>
+                        {% for mood in unique_moods %}
+                        <option value="{{ mood }}" {% if filter_mood == mood %}selected{% endif %}>
+                            {{ mood|title }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="sort-group">
+                    <label for="sort_by">📅 Sort by:</label>
+                    <select id="sort_by" name="sort_by">
+                        <option value="newest" {% if sort_by == 'newest' %}selected{% endif %}>Newest First</option>
+                        <option value="oldest" {% if sort_by == 'oldest' %}selected{% endif %}>Oldest First</option>
+                        <option value="mood" {% if sort_by == 'mood' %}selected{% endif %}>By Mood</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="filter-actions">
+                <button type="submit" class="btn btn-secondary">Apply Filters</button>
+                <a href="{{ url_for('journal') }}" class="btn btn-outline">Clear All</a>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+
     {% if entries %}
     <div class="journal-entries">
-        <h2 class="entries-title">Your Recent Entries</h2>
+        <h2 class="entries-title">
+            Your Journal Entries 
+            {% if search_term or filter_mood != 'all' %}
+                ({{ entries|length }} found)
+            {% else %}
+                ({{ entries|length }})
+            {% endif %}
+        </h2>
         <div class="entries-grid">
-            {% for entry in entries|reverse %}
+            {% for entry in entries %}
             <div class="entry-card">
                 <div class="entry-header">
                     <span class="entry-date">{{ entry.date }}</span>
                     <span class="entry-mood mood-{{ entry.mood }}">{{ entry.mood|title }}</span>
                 </div>
                 <div class="entry-content">
-                    <p>{{ entry.text[:200] }}{% if entry.text|length > 200 %}...{% endif %}</p>
+                    <p>{{ entry.text }}</p>
                 </div>
             </div>
             {% endfor %}
+        </div>
+    </div>
+    {% elif search_term or filter_mood != 'all' %}
+    <div class="no-entries">
+        <div class="no-entries-content">
+            <div class="no-entries-icon">🔍</div>
+            <h3>No entries found</h3>
+            <p>Try adjusting your search or filter criteria.</p>
+            <a href="{{ url_for('journal') }}" class="btn btn-primary">Clear Filters</a>
         </div>
     </div>
     {% else %}

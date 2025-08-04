@@ -61,10 +61,32 @@
         </div>
     </form>
 
+    <!-- Recent Mood History -->
+    {% if recent_moods %}
+    <div class="recent-moods">
+        <h3>Recent Mood History</h3>
+        <div class="mood-history-grid">
+            {% for mood_entry in recent_moods %}
+            <div class="mood-history-item">
+                <span class="mood-name">{{ mood_entry.mood|title }}</span>
+                <span class="mood-date">{{ mood_entry.date.split()[0] }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
     <div class="mood-info">
         <div class="info-card">
             <h3>💡 Why Track Your Mood?</h3>
-            <p>Understanding your emotional patterns helps you identify triggers, celebrate positive moments, and develop healthier coping strategies for challenging times.</p>
+            <p>Understanding your emotional patterns helps you identify triggers, celebrate positive moments, 
+            and develop healthier coping strategies for challenging times.</p>
+            <ul class="info-list">
+                <li>• Identify patterns and triggers in your emotional responses</li>
+                <li>• Track progress in your mental health journey</li>
+                <li>• Receive personalized quotes based on your current state</li>
+                <li>• Build emotional awareness and mindfulness</li>
+            </ul>
         </div>
     </div>
 </div>
