@@ -57,7 +57,9 @@ docker rm mindcare-container
   docker rm -f mindcare-container
   ```
 * Ensure Docker daemon is running.
-
+## creator's note
+i wanted to create a user friednly which had a front-end and a backend but the time have not been my friend i may call this as my prototype but promise you to implement my idea in the times to come and i wish you to consider the thought and the work and evrything 
+Thank you
 ## License
 
 This project is open source and available under the MIT License.
